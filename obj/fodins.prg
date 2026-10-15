@@ -1,29 +1,29 @@
-// +--------------------------------------------------------------------
-// +
-// +
-// +
-// +    Programa  : fodins.prg
-// +
-// +
-// +
-// +     Sistema:
-// +
-// +     Linguagem: Harbour
-// +
-// +     Autor: jcassiano
-// +
-// +     Copyright (c) 2024,  jcassiano
-// +
-// +
-// +
-// +
-// +
-// +    Documentado em 27-Dez-2024 as  9:45 pm
-// +
-// +
-// +
-// +--------------------------------------------------------------------
-// +
+*+--------------------------------------------------------------------
+*+
+*+
+*+
+*+    Programa  : fodins.prg
+*+
+*+
+*+
+*+     Sistema:
+*+
+*+     Linguagem: Harbour
+*+
+*+     Autor: jcassiano
+*+
+*+     Copyright (c) 2024,  jcassiano
+*+
+*+     
+*+
+*+
+*+
+*+    Documentado em 15-Out-2026 as 12:37 pm
+*+
+*+
+*+
+*+--------------------------------------------------------------------
+*+
 
 // :*****************************************************************************
 // :
@@ -66,59 +66,61 @@
 // +
 FUNCTION fodins
 
-   PARA CC
 
-   MDS( 'Aguarde atualizando as incidˆncias tribut rias ok !!!!!! ' )
+PARA CC
 
-   DO CASE
-   CASE CC = 1
-      IF !NETUSE( FOL )  // AREDE(FOL,FOL,0)
-         RETU
-      ENDIF
-   CASE CC = 2
-      IF !NETUSE( "FO_PFE" )   // AREDE("FO_PFE","FO_PFE",0)
-         RETU
-      ENDIF
-   CASE CC = 3
-      IF !NETUSE( "FO_RSS" )   // AREDE("FO_RSS","FO_RSS",0)
-         RETU
-      ENDIF
-   CASE CC = 4
-      c13 := PEG13()
-      IF !NETUSE( c13 )  // AREDE(c13,c13,0)
-         RETU
-      ENDIF
-   CASE CC = 5
-      IF !NETUSE( "FO_COMP" )  // AREDE("FO_COMP","FO_COMP",0)
-         RETU
-      ENDIF
-   ENDCASE
-   cSELE1 := Alias()
+MDS('Aguarde atualizando as incidˆncias tribut rias ok !!!!!! ')
 
-
-   IF !NETUSE( "CONTAS" )  // AREDE("CONTAS","CONTAS",0)
+DO CASE
+CASE CC = 1
+   IF !NETUSE(FOL)  // AREDE(FOL,FOL,0)
       RETU
    ENDIF
-   dbSelectAr( cSELE1 )
-   dbGoTop()
-   WHILE !Eof()
-      CTA := CONTA
-      XA  := XB := XF := XC := XD := XE := 1   // nao incide para todos
-      dbSelectAr( "CONTAS" )
-      dbGoTop()
-      IF dbSeek( CTA )
-         INCIDE()
-      ENDIF
-      dbSelectAr( cSELE1 )
-      NETRECLOCK()
-      REPL FATOR WITH XA, TIPO WITH XB, TRIBUTINPS WITH XC
-      REPL TRIBUTIRR WITH XD, TRIB_FGTS WITH XE, VALORBASE WITH XF
-      dbUnlock()
-      dbSkip()
-   ENDDO
-   dbCloseAll()
+CASE CC = 2
+   IF !NETUSE("FO_PFE")   // AREDE("FO_PFE","FO_PFE",0)
+      RETU
+   ENDIF
+CASE CC = 3
+   IF !NETUSE("FO_RSS")   // AREDE("FO_RSS","FO_RSS",0)
+      RETU
+   ENDIF
+CASE CC = 4
+   c13 := PEG13()
+   IF !NETUSE(c13)  // AREDE(c13,c13,0)
+      RETU
+   ENDIF
+CASE CC = 5
+   IF !NETUSE("FO_COMP")  // AREDE("FO_COMP","FO_COMP",0)
+      RETU
+   ENDIF
+ENDCASE
+cSELE1 := Alias()
+
+
+IF !NETUSE("CONTAS")  // AREDE("CONTAS","CONTAS",0)
    RETU
+ENDIF
+dbSelectAr(cSELE1)
+dbGoTop()
+WHILE !Eof()
+   CTA := CONTA
+   XA  := XB := XF := XC := XD := XE := 1   // nao incide para todos
+   dbSelectAr("CONTAS")
+   dbGoTop()
+   IF dbSeek(CTA)
+      INCIDE()
+   ENDIF
+   dbSelectAr(cSELE1)
+   NETRECLOCK()
+   REPL FATOR WITH XA,TIPO WITH XB,TRIBUTINPS WITH XC
+   REPL TRIBUTIRR WITH XD,TRIB_FGTS WITH XE,VALORBASE WITH XF
+   dbUnlock()
+   dbSkip()
+ENDDO
+dbCloseAll()
+RETU
 // : FIM: FODINS.PRG
 
-// + EOF: fodins.prg
-// +
+
+*+ EOF: fodins.prg
+*+

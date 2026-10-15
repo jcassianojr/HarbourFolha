@@ -1,46 +1,69 @@
-// +--------------------------------------------------------------------
-// +
-// +    Programa  : fo7W.prg funcao cadastro colaboradores
-// +
-// +     Sistema: FOLHA DE PAGAMENTO 
-// +
-// +     Linguagem: Harbour
-// +
-// +     Autor: jcassiano
-// +
-// +     Copyright (c) 2024,  jcassiano
-// +
-// +    Documentado em 27-Dez-2024 as  9:45 pm
-// +
-// +--------------------------------------------------------------------
-// +
-
+*+--------------------------------------------------------------------
+*+
+*+
+*+
+*+    Programa  : fo7W.prg
+*+
+*+
+*+
+*+     Sistema:
+*+
+*+     Linguagem: Harbour
+*+
+*+     Autor: jcassiano
+*+
+*+     Copyright (c) 2024,  jcassiano
+*+
+*+     
+*+
+*+
+*+
+*+    Documentado em 15-Out-2026 as 12:36 pm
+*+
+*+
+*+
+*+--------------------------------------------------------------------
+*+
 
 #include "BOX.CH"
 
+
+*+--------------------------------------------------------------------
+*+
+*+
+*+
+*+    Function fo7w()
+*+
+*+
+*+
+*+--------------------------------------------------------------------
+*+
+*+
+*+
 function fo7w()
+
 cARQTXT := "C:\TEMP\DUP.TXT"
-nHANDLE := FCreate( cARQTXT )
+nHANDLE := FCreate(cARQTXT)
 cFILTRO := "EMPTY(DEMITIDO).OR.YEAR(DEMITIDO)>=ANOUSO"
-IF !NETUSE( pes,,,,, .F., )
-RETU
+IF !NETUSE(pes,,,,,.F.,)
+   RETU
 ENDIF
 
 SET FILTER TO &cFILTRO.
 
-chkpesdup( "CPF", "CPF: " )
-chkpesdup( "RG", "RG: " )
-chkpesdup( "CI", "CI:" )
-chkpesdup( "PIS", "PIS:" )
-chkpesdup( "CNH", "CNH:" )
-chkpesdup( "TITULO", "TITULO:" )
-chkpesdup( "PROFIS+'/'+SERIE", "CTPS:" )
-chkpesdup( "CNS", "CNS:" )
+chkpesdup("CPF","CPF: ")
+chkpesdup("RG","RG: ")
+chkpesdup("CI","CI:")
+chkpesdup("PIS","PIS:")
+chkpesdup("CNH","CNH:")
+chkpesdup("TITULO","TITULO:")
+chkpesdup("PROFIS+'/'+SERIE","CTPS:")
+chkpesdup("CNS","CNS:")
 dbCloseAll()
-FClose( nHANDLE )
-VERTXT( cARQTXT )
-IF MDG( "Deseja imprimir" )
-imparq( cARQTXT )
+FClose(nHANDLE)
+VERTXT(cARQTXT)
+IF MDG("Deseja imprimir")
+   imparq(cARQTXT)
 ENDIF
 return .t.
 
@@ -57,83 +80,84 @@ return .t.
 // +
 // +
 // +
-FUNCTION chkpesdup( cVAR, cERRO )
+FUNCTION chkpesdup(cVAR,cERRO)
 
-   ordDestroy( "temp" )
-   ordCreate(, "temp", Cvar )
-   ordSetFocus( "temp" )
 
-   dbGoTop()
-   WHILE !Eof()
-      zerro := ""
-      eNUM  := NUMERO
-      eNOME := NOME
-      eVAR  := &cVAR.
-      cDIZ  := Str( NUMERO ) + ": "
+ordDestroy("temp")
+ordCreate(,"temp",Cvar)
+ordSetFocus("temp")
 
-      ZERRO := cERRO + " invalido: "
+dbGoTop()
+WHILE !Eof()
+   zerro := ""
+   eNUM  := NUMERO
+   eNOME := NOME
+   eVAR  := &cVAR.
+   cDIZ  := Str(NUMERO)+": "
 
-      IF cVAR = "CNH" .OR. cVAR = "TITULO"
-         IF Val( eVAR ) = 0
-            eVAR := ""
-         ENDIF
+   ZERRO := cERRO+" invalido: "
+
+   IF cVAR = "CNH" .OR. cVAR = "TITULO"
+      IF Val(eVAR) = 0
+         eVAR := ""
       ENDIF
+   ENDIF
 
-      IF cVAR = "PIS"
-         IF !VALPIS( PIS, .F., .F., FIELD->EVINC )
-            FWrite( nHANDLE, cDIZ + ZERRO + PIS + hb_osNewLine() )
-         ENDIF
+   IF cVAR = "PIS"
+      IF !VALPIS(PIS,.F.,.F.,FIELD->EVINC)
+         FWrite(nHANDLE,cDIZ+ZERRO+PIS+hb_osNewLine())
       ENDIF
+   ENDIF
 
 
-      IF cVAR = "CPF"
-         IF !valcpf( cpf, .F. )
-            FWrite( nHANDLE, cDIZ + ZERRO + CPF + hb_osNewLine() )
-         ENDIF
+   IF cVAR = "CPF"
+      IF !valcpf(cpf,.F.)
+         FWrite(nHANDLE,cDIZ+ZERRO+CPF+hb_osNewLine())
       ENDIF
+   ENDIF
 
-      IF cVAR = "CNS"
-         IF !valCNS( cns, .F. )
-            FWrite( nHANDLE, cDIZ + ZERRO + CNS + hb_osNewLine() )
-         ENDIF
+   IF cVAR = "CNS"
+      IF !valCNS(cns,.F.)
+         FWrite(nHANDLE,cDIZ+ZERRO+CNS+hb_osNewLine())
       ENDIF
+   ENDIF
 
 
-      IF cVAR = "RG" .AND. EVINC <> "722" .AND. EVINC <> "721"   // nao checar diretores
-         IF !checkrg( RG, .F., RGTIP, NASC, RGUF )
-            FWrite( nHANDLE, cDIZ + zerro + RG + hb_osNewLine() )
-         ENDIF
+   IF cVAR = "RG" .AND. EVINC <> "722" .AND. EVINC <> "721"   // nao checar diretores
+      IF !checkrg(RG,.F.,RGTIP,NASC,RGUF)
+         FWrite(nHANDLE,cDIZ+zerro+RG+hb_osNewLine())
       ENDIF
+   ENDIF
 
 
-      IF cVAR = "TITULO"
-         IF !checkTITULO( TITULO, .F. )
-            FWrite( nHANDLE, cDIZ + ZERRO + TITULO + hb_osNewLine() )
-         ENDIF
+   IF cVAR = "TITULO"
+      IF !checkTITULO(TITULO,.F.)
+         FWrite(nHANDLE,cDIZ+ZERRO+TITULO+hb_osNewLine())
       ENDIF
+   ENDIF
 
-      IF cVAR = "CEP"  // CEP
-         IF !Empty( CEP ) .AND. !Empty( ESTADO ) .AND. cep2uf( cep ) <> ESTADO
-            FWrite( nHANDLE, cDIZ + "-Cep=" + CEP + " nao e do estado=" + ESTADO + hb_osNewLine() )
-         ENDIF
+   IF cVAR = "CEP"  // CEP
+      IF !Empty(CEP) .AND. !Empty(ESTADO) .AND. cep2uf(cep) <> ESTADO
+         FWrite(nHANDLE,cDIZ+"-Cep="+CEP+" nao e do estado="+ESTADO+hb_osNewLine())
       ENDIF
+   ENDIF
 
 
 
-      dbSkip()
-      IF !Empty( eVAR ) .AND. !Eof()
-         IF eVAR = &cVAR.
-            IF eNOME <> NOME
-               IF cVAR = "CTPS" .AND. ( EVINC = "722" .OR. EVINC = "721" )
-               ELSE
-                  FWrite( nHANDLE, cERRO + Str( eNUM, 8 ) + "-" + eNOME + "=" + Str( NUMERO, 8 ) + "-" + NOME + "-->" + STRVAL( eVAR ) + hb_osNewLine() )
-               ENDIF
+   dbSkip()
+   IF !Empty(eVAR) .AND. !Eof()
+      IF eVAR = &cVAR.
+         IF eNOME <> NOME
+            IF cVAR = "CTPS" .AND. (EVINC = "722" .OR. EVINC = "721")
+            ELSE
+               FWrite(nHANDLE,cERRO+Str(eNUM,8)+"-"+eNOME+"="+Str(NUMERO,8)+"-"+NOME+"-->"+STRVAL(eVAR)+hb_osNewLine())
             ENDIF
          ENDIF
       ENDIF
-   ENDDO
+   ENDIF
+ENDDO
 
-   RETURN .T.
+RETURN .T.
 
 // !*****************************************************************************
 // !
@@ -153,7 +177,8 @@ FUNCTION chkpesdup( cVAR, cERRO )
 // +
 // +
 // +
-FUNCTION VALSITU( eSITU, eVALE, eRAIS )
+FUNCTION VALSITU(eSITU,eVALE,eRAIS)
+
 
 /*
 01 Acidente/Doença do trabalho
@@ -222,55 +247,55 @@ internacional do qual o Brasil seja membro
 99  Outros Motivos de afastamento temporário.
 */
 
-   mSITU := &eSITU.
-   IF Empty( mSITU )
-      RETU .T.
+mSITU := &eSITU.
+IF Empty(mSITU)
+   RETU .T.
+ENDIF
+SCR_SIT := SaveScreen(22,00,24,79)
+IF Empty(mSITU) .AND. !Empty(&Evale.)
+   IF MDG("Confirmar não receber adiantamento")
+   ELSE
+      &evale. := ""
    ENDIF
-   SCR_SIT := SaveScreen( 22, 00, 24, 79 )
-   IF Empty( mSITU ) .AND. !Empty( &Evale. )
-      IF MDG( "Confirmar não receber adiantamento" )
-      ELSE
-         &evale. := ""
-      ENDIF
-   ENDIF
-   IF Empty( mSITU )
-      RestScreen( 22, 00, 24, 79, SCR_SIT )
-      RETURN .T.
-   ENDIF
-   IF mSITU = "S"
-      &eSITU. := "01"
-   ENDIF
-   IF mSITU = "I"
-      &eSITU. := "03"
-   ENDIF
-   IF mSITU = "E"
-      &eSITU. := "12"
-   ENDIF
-   IF mSITU = "M"
-      &eSITU. := "06"
-   ENDIF
-   IF mSITU = "S" .OR. mSITU = "01"
-      &eRAIS. := "2"
-   ENDIF
-   IF mSITU = "I" .OR. mSITU = "03"
-      &eRAIS. := "5"
-   ENDIF
-   IF mSITU = "E" .OR. MSITU = "12"
-      &eRAIS. := "3"
-   ENDIF
-   IF mSITU = "M" .OR. MSITU = "06"
-      &eRAIS. := "4"
-   ENDIF
-   IF MDG( 'Confirme Situação Especial' )
-      IF MDG( "Marcar para não receber adiantamento" )
-         &EVALE. := "S"
-      ENDIF
-      RestScreen( 22, 00, 24, 79, SCR_SIT )
-      RETURN CHECKTAB( "SITU" + PadR( mSITU, 5 ), 24, 0, "Situação não Cadastrado" )
-   ENDIF
-   RestScreen( 22, 00, 24, 79, SCR_SIT )
-
+ENDIF
+IF Empty(mSITU)
+   RestScreen(22,00,24,79,SCR_SIT)
    RETURN .T.
+ENDIF
+IF mSITU = "S"
+   &eSITU. := "01"
+ENDIF
+IF mSITU = "I"
+   &eSITU. := "03"
+ENDIF
+IF mSITU = "E"
+   &eSITU. := "12"
+ENDIF
+IF mSITU = "M"
+   &eSITU. := "06"
+ENDIF
+IF mSITU = "S" .OR. mSITU = "01"
+   &eRAIS. := "2"
+ENDIF
+IF mSITU = "I" .OR. mSITU = "03"
+   &eRAIS. := "5"
+ENDIF
+IF mSITU = "E" .OR. MSITU = "12"
+   &eRAIS. := "3"
+ENDIF
+IF mSITU = "M" .OR. MSITU = "06"
+   &eRAIS. := "4"
+ENDIF
+IF MDG('Confirme Situação Especial')
+   IF MDG("Marcar para não receber adiantamento")
+      &EVALE. := "S"
+   ENDIF
+   RestScreen(22,00,24,79,SCR_SIT)
+   RETURN CHECKTAB("SITU"+PadR(mSITU,5),24,0,"Situação não Cadastrado")
+ENDIF
+RestScreen(22,00,24,79,SCR_SIT)
+
+RETURN .T.
 
 
 // +--------------------------------------------------------------------
@@ -285,21 +310,22 @@ internacional do qual o Brasil seja membro
 // +
 // +
 // +
-FUNCTION VALOCO( eOCO, eCAMPO )
+FUNCTION VALOCO(eOCO,eCAMPO)
 
-   cOCO := &eoco.
-   DO CASE
-   CASE coco = "0" .OR. coco = "1" .OR. coco = "5" .OR. Empty( coco )
-      &eCAMPO. := "1"  // nao exposto
-   CASE coco = "4" .OR. coco = "8"
-      &eCAMPO. := "2"  // 25 anos
-   CASE coco = "3" .OR. coco = "7"
-      &eCAMPO. := "3"  // 20 anos
-   CASE coco = "2" .OR. coco = "6"
-      &eCAMPO. := "4"  // 15 anos
-   ENDCASE
 
-   RETURN .T.
+cOCO := &eoco.
+DO CASE
+CASE coco = "0" .OR. coco = "1" .OR. coco = "5" .OR. Empty(coco)
+   &eCAMPO. := "1"  // nao exposto
+CASE coco = "4" .OR. coco = "8"
+   &eCAMPO. := "2"  // 25 anos
+CASE coco = "3" .OR. coco = "7"
+   &eCAMPO. := "3"  // 20 anos
+CASE coco = "2" .OR. coco = "6"
+   &eCAMPO. := "4"  // 15 anos
+ENDCASE
+
+RETURN .T.
 
 
 // +--------------------------------------------------------------------
@@ -314,41 +340,42 @@ FUNCTION VALOCO( eOCO, eCAMPO )
 // +
 // +
 // +
-FUNCTION CorrigeEndereco( eENDER, eENDNUM, eENDCOMPL, eENDTIP )
-
-   LOCAL cENDER, cENDNUM, cENDCOMPL, cENDTIP, nLEN, aCNV, nFIM, X, nLENEND
-
-   aCNV := aconvertend()
+FUNCTION CorrigeEndereco(eENDER,eENDNUM,eENDCOMPL,eENDTIP)
 
 
-   cENDER    := &eENDER.
-   nLENEND   := Len( cENDER )
-   cENDER    := AllTrim( cENDER )
-   cENDNUM   := AllTrim( &eENDNUM. )
-   cENDCOMPL := AllTrim( &eENDCOMPL. )
-   cENDTIP   := AllTrim( &eENDTIP. )
-   cENDER    := StrTran( cENDER, cENDNUM, "" )
-   cENDER    := StrTran( cENDER, cENDCOMPL, "" )
-   cENDER    := StrTran( cENDER, ",", " " )
-   cENDER    := StrTran( cENDER, "  ", " " )   // duplo espacos
-   IF !Empty( cENDTIP )
-      &eENDER. := PadR( cENDER, nLENEND )
-      RETURN cENDER
-   ENDIF
+LOCAL cENDER,cENDNUM,cENDCOMPL,cENDTIP,nLEN,aCNV,nFIM,X,nLENEND
 
-   nFIM := Len( ACNV )
-   FOR x := 1 TO nFIM
-      IF Empty( cENDTIP )
-         nLEN := Len( aCNV[ X, 1 ] )
-         IF aCNV[ X, 1 ] = SubStr( cENDER, 1, NlEN )
-            cENDER    := AllTrim( SubStr( cENDER, NlEN + 1 ) )
-            &eENDTIP. := aCNV[ X, 2 ]
-         ENDIF
-      ENDIF
-   NEXT x
-   &eENDER. := PadR( cENDER, nLENEND )
+aCNV := aconvertend()
 
+
+cENDER    := &eENDER.
+nLENEND   := Len(cENDER)
+cENDER    := AllTrim(cENDER)
+cENDNUM   := AllTrim(&eENDNUM.)
+cENDCOMPL := AllTrim(&eENDCOMPL.)
+cENDTIP   := AllTrim(&eENDTIP.)
+cENDER    := StrTran(cENDER,cENDNUM,"")
+cENDER    := StrTran(cENDER,cENDCOMPL,"")
+cENDER    := StrTran(cENDER,","," ")
+cENDER    := StrTran(cENDER,"  "," ")   // duplo espacos
+IF !Empty(cENDTIP)
+   &eENDER. := PadR(cENDER,nLENEND)
    RETURN cENDER
+ENDIF
+
+nFIM := Len(ACNV)
+FOR x := 1 TO nFIM
+   IF Empty(cENDTIP)
+      nLEN := Len(aCNV[X,1])
+      IF aCNV[X,1] = SubStr(cENDER,1,NlEN)
+         cENDER    := AllTrim(SubStr(cENDER,NlEN+1))
+         &eENDTIP. := aCNV[X,2]
+      ENDIF
+   ENDIF
+NEXT x
+&eENDER. := PadR(cENDER,nLENEND)
+
+RETURN cENDER
 /*
 01 - Analfabeto
 02 - Até a 4ª série incompleta do ensino fundamental (antigo 1ºgrau ou primário), ou que tenha se alfabetizado sem terfrequentado escola regular.
@@ -377,16 +404,17 @@ FUNCTION CorrigeEndereco( eENDER, eENDNUM, eENDCOMPL, eENDTIP )
 // +
 // +
 // +
-FUNCTION BacenNacion( cBACEN )
+FUNCTION BacenNacion(cBACEN)
 
-   nNACION := 0
-   IF cBACEN = "1058"
-      nNACION := "10"
-   ELSE
-      nNACION := Val( OBTER( "FO_TAB",, "NACI" + cBACEN, "CODIGO", 2 ) )
-   ENDIF
 
-   RETURN nNACION
+nNACION := 0
+IF cBACEN = "1058"
+   nNACION := "10"
+ELSE
+   nNACION := Val(OBTER("FO_TAB",,"NACI"+cBACEN,"CODIGO",2))
+ENDIF
+
+RETURN nNACION
 
 
 // +--------------------------------------------------------------------
@@ -401,30 +429,32 @@ FUNCTION BacenNacion( cBACEN )
 // +
 // +
 // +
-FUNCTION iFOPTO4E( lPEGCHAVE )
+FUNCTION iFOPTO4E(lPEGCHAVE)
 
-   IF lPEGCHAVE
-      PEGCHAVE( "mNUMERO", ULTIMOREG( PES, "NUMERO", .T. ), "Numero:" )
-      IF verseha( PES,, mNUMERO,,, .F., )  // quando usado como crtl+enter busca
-         RETURN .F.
-      ENDIF
+
+IF lPEGCHAVE
+   PEGCHAVE("mNUMERO",ULTIMOREG(PES,"NUMERO",.T.),"Numero:")
+   IF verseha(PES,,mNUMERO,,,.F.,)  // quando usado como crtl+enter busca
+      RETURN .F.
    ENDIF
-   hb_DispBox( 4, 0, 23, 79, B_DOUBLE + " " )
-   @  5, 2  SAY "Nome           :"
-   @  7, 02 SAY "CPF            :"
-   @  9, 38 SAY "PIS            :"
-   @ 11, 22 SAY "Data Nascimento:"
-   @  5, 15 GET mNOME              VALID !Empty( mNOME )
-   @  7, 06 GET mCPF               PICTURE "999.999.999-99"                                      VALID VALCPF( mCPF )
-   @  9, 43 GET mPIS               VALID VALPIS( mPIS ) .OR. MDG( "Pis em Branco Primeiro Emprego" )
-   @ 11, 12 GET mNASC              VALID !Empty( mNASC )
+ENDIF
+hb_DispBox(4,0,23,79,B_DOUBLE+" ")
+@  5,2  SAY "Nome           :"                                                                                        
+@  7,02 SAY "CPF            :"                                                                                        
+@  9,38 SAY "PIS            :"                                                                                        
+@ 11,22 SAY "Data Nascimento:"                                                                                        
+@  5,15 GET mNOME              VALID !Empty(mNOME)                                                                    
+@  7,06 GET mCPF               PICTURE "999.999.999-99"                                      VALID VALCPF(mCPF)       
+@  9,43 GET mPIS               VALID VALPIS(mPIS) .OR. MDG("Pis em Branco Primeiro Emprego")                          
+@ 11,12 GET mNASC              VALID !Empty(mNASC)                                                                    
 
-   RETURN READCUR()
+RETURN READCUR()
 
 // : FIM: FO7A.PRG
 
 
 
 
-// + EOF: fo7W.prg
-// +
+
+*+ EOF: fo7W.prg
+*+

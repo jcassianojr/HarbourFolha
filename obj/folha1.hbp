@@ -13,6 +13,7 @@ hbtip.hbc
 xhb.hbc
 hbhpdf.hbc
 hbmisc.hbc
+hbmzip.hbc
 
 folha1.PRG
 disk01.PRG
@@ -236,6 +237,11 @@ c:\develop\harbour\csvrdd\f_freadl.prg
 \develop\harbour\privado\sefazclass\ze_inscestadual.prg
 \develop\harbour\privado\sefazclass\ze_miscfunc.prg
 \develop\harbour\privado\sefazclass\ze_digitodoc.prg
-\develop\harbour\diversos\objmgw\hbnfeemail.prg
+c:\develop\harbour\privado\objmgw\hbnfeemail.prg
 \develop\harbour\diversos\objmgw\modeseguranca.prg
 
+
+c:\develop\harbour\OdsOdt\cnvformatos.prg
+c:\develop\harbour\OdsOdt\docclass.prg
+c:\develop\harbour\OdsOdt\dumyzebra.prg
+c:\develop\harbour\OdsOdt\odtclass.prg

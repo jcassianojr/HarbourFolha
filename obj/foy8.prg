@@ -1,29 +1,29 @@
-// +--------------------------------------------------------------------
-// +
-// +
-// +
-// +    Programa  : foy8.prg
-// +
-// +
-// +
-// +     Sistema:
-// +
-// +     Linguagem: Harbour
-// +
-// +     Autor: jcassiano
-// +
-// +     Copyright (c) 2024,  jcassiano
-// +
-// +
-// +
-// +
-// +
-// +    Documentado em 27-Dez-2024 as  9:46 pm
-// +
-// +
-// +
-// +--------------------------------------------------------------------
-// +
+*+--------------------------------------------------------------------
+*+
+*+
+*+
+*+    Programa  : foy8.prg
+*+
+*+
+*+
+*+     Sistema:
+*+
+*+     Linguagem: Harbour
+*+
+*+     Autor: jcassiano
+*+
+*+     Copyright (c) 2024,  jcassiano
+*+
+*+     
+*+
+*+
+*+
+*+    Documentado em 15-Out-2026 as 12:37 pm
+*+
+*+
+*+
+*+--------------------------------------------------------------------
+*+
 
 // :*****************************************************************************
 // :
@@ -68,64 +68,65 @@
 // +
 FUNCTION foy8
 
-   PARA cSISTEMA
 
-   IF ValType( cSISTEMA ) # "C"
-      cSISTEMA := "FOLHA"
-   ENDIF
+PARA cSISTEMA
 
-   SCR_FOY8 := SaveScreen( 00, 00, 03, 79 )
-   CLSCOR()
-   CABEX( "Atualizando Estruturas de Arquivos" )
+IF ValType(cSISTEMA) # "C"
+   cSISTEMA := "FOLHA"
+ENDIF
+
+SCR_FOY8 := SaveScreen(00,00,03,79)
+CLSCOR()
+CABEX("Atualizando Estruturas de Arquivos")
 // Guarda o Diretorio principal
-   PATWORK := hb_cwd()
-   IF cSISTEMA = "SETOR" .OR. MDG( "Deseja alterar estrutura do Diretorio Principal" )
-      CLSCOR()
-      MDT( 'Atualizando dbf no diretorio principal' )
-      MUDADBF()
-   ENDIF
-   IF cSISTEMA = "SETOR"
-      RETU
-   ENDIF
-   aNUMEMP := {}
-   aCOGEMP := {}
-   FILTRO  := ""
-   aRETU   := RFILORD( "FIRMA", .F. )
-   INX     := aRETU[ 1 ]
-   FILTRO  := aRETU[ 2 ]
+PATWORK := hb_cwd()
+IF cSISTEMA = "SETOR" .OR. MDG("Deseja alterar estrutura do Diretorio Principal")
+   CLSCOR()
+   MDT('Atualizando dbf no diretorio principal')
+   MUDADBF()
+ENDIF
+IF cSISTEMA = "SETOR"
+   RETU
+ENDIF
+aNUMEMP := {}
+aCOGEMP := {}
+FILTRO  := ""
+aRETU   := RFILORD("FIRMA",.F.)
+INX     := aRETU[1]
+FILTRO  := aRETU[2]
 
-   IF !NETUSE( "FIRMA" )
-      RETU .F.
+IF !NETUSE("FIRMA")
+   RETU .F.
+ENDIF
+SET FILTER TO &FILTRO
+dbGoTop()
+WHILE !Eof()
+   IF cSISTEMA <> "FISCAL"
+      AAdd(aNUMEMP,NRCLIEN)
+   ELSE
+      AAdd(aNUMEMP,NUMERO)
    ENDIF
-   SET FILTER TO &FILTRO
-   dbGoTop()
-   WHILE !Eof()
-      IF cSISTEMA <> "FISCAL"
-         AAdd( aNUMEMP, NRCLIEN )
-      ELSE
-         AAdd( aNUMEMP, NUMERO )
-      ENDIF
-      AAdd( aCOGEMP, COGNOME )
-      dbSkip()
-   ENDDO
-   dbCloseAll()
+   AAdd(aCOGEMP,COGNOME)
+   dbSkip()
+ENDDO
+dbCloseAll()
 
-   pNUMEMP := Len( aNUMEMP )
-   FOR W := 1 TO pNUMEMP
-      MDT( 'Atualizando dbf no diretorio da empresa : ' + aCOGEMP[ W ] )
-      CLSCOR()
-      // Mudar para diretorio da empresa
-      // DIRCHANGE(PATWORK+'\EMP'+ANOWORK+STRZERO(aNUMEMP[W],3))
-      hb_cwd( PATWORK + '\EMP' + ANOWORK + StrZero( aNUMEMP[ W ], 3 ) )
-      MUDADBF()
-   NEXT X
+pNUMEMP := Len(aNUMEMP)
+FOR W := 1 TO pNUMEMP
+   MDT('Atualizando dbf no diretorio da empresa : '+aCOGEMP[W])
+   CLSCOR()
+   // Mudar para diretorio da empresa
+   // DIRCHANGE(PATWORK+'\EMP'+ANOWORK+STRZERO(aNUMEMP[W],3))
+   hb_cwd(PATWORK+'\EMP'+ANOWORK+StrZero(aNUMEMP[W],3))
+   MUDADBF()
+NEXT X
 // Voltar diretorio Principal
 // DIRCHANGE(PATWORK)
-   hb_cwd( PATWORK )
+hb_cwd(PATWORK)
 
 // CRIAR DBF NAO EXISTENTES
-   RestScreen( 00, 00, 03, 79, SCR_FOY8 )
-   RETU
+RestScreen(00,00,03,79,SCR_FOY8)
+RETU
 
 // !*****************************************************************************
 // !
@@ -152,20 +153,22 @@ FUNCTION foy8
 
 FUNC MUDADBF
 
-   MATDBF := FILENAMES( "*.DBF" )
-   nARQ   := Len( MATDBF )
-   IF nARQ > 0
-      FOR X := 1 TO nARQ
-         cARQDIC := PATWORK + "\" + TIRAEXT( MATDBF[ X ], 'DBE' )
-         IF File( cARQDIC )
-            MDT( "Atualizando arquivo " + MATDBF[ X ] )
-            CLSCOR()
-            MAKEDBF( cARQDIC )
-         ENDIF
-      NEXT X
-   ENDIF
-   RETU .T.
+
+MATDBF := FILENAMES("*.DBF")
+nARQ   := Len(MATDBF)
+IF nARQ > 0
+   FOR X := 1 TO nARQ
+      cARQDIC := PATWORK+"\"+TIRAEXT(MATDBF[X],'DBE')
+      IF File(cARQDIC)
+         MDT("Atualizando arquivo "+MATDBF[X])
+         CLSCOR()
+         MAKEDBF(cARQDIC)
+      ENDIF
+   NEXT X
+ENDIF
+RETU .T.
 
 
-// + EOF: foy8.prg
-// +
+
+*+ EOF: foy8.prg
+*+

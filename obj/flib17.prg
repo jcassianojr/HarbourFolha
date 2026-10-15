@@ -1,29 +1,29 @@
-// +--------------------------------------------------------------------
-// +
-// +
-// +
-// +    Programa  : flib17.prg
-// +
-// +
-// +
-// +     Sistema:
-// +
-// +     Linguagem: Harbour
-// +
-// +     Autor: jcassiano
-// +
-// +     Copyright (c) 2024,  jcassiano
-// +
-// +
-// +
-// +
-// +
-// +    Documentado em 27-Dez-2024 as  9:44 pm
-// +
-// +
-// +
-// +--------------------------------------------------------------------
-// +
+*+--------------------------------------------------------------------
+*+
+*+
+*+
+*+    Programa  : flib17.prg
+*+
+*+
+*+
+*+     Sistema:
+*+
+*+     Linguagem: Harbour
+*+
+*+     Autor: jcassiano
+*+
+*+     Copyright (c) 2024,  jcassiano
+*+
+*+     
+*+
+*+
+*+
+*+    Documentado em 15-Out-2026 as 12:36 pm
+*+
+*+
+*+
+*+--------------------------------------------------------------------
+*+
 
 // !*****************************************************************************
 // !
@@ -45,25 +45,27 @@
 // +
 // +
 // +
-FUNCTION ULTIMOREG( ARQWORK, FIEWORK, lSOMA )
+FUNCTION ULTIMOREG(ARQWORK,FIEWORK,lSOMA)
 
-   IF ValType( lSOMA ) # "L"
-      lSOMA := .F.
-   ENDIF
-   IF !NETUSE( ARQWORK )
-      RETU
-   ENDIF
-   dbGoBottom()
-   RETORNO := &FIEWORK.
-   dbCloseAll()
-   IF lSOMA .AND. ValType( RETORNO ) = "N"
-      RETORNO++
-   ENDIF
-   RETU RETORNO
+
+IF ValType(lSOMA) # "L"
+   lSOMA := .F.
+ENDIF
+IF !NETUSE(ARQWORK)
+   RETU
+ENDIF
+dbGoBottom()
+RETORNO := &FIEWORK.
+dbCloseAll()
+IF lSOMA .AND. ValType(RETORNO) = "N"
+   RETORNO ++
+ENDIF
+RETU RETORNO
 
 
 
 // {|| PEGCHAVE("m",ULTIMOREG(cARQ,cCAMPO,.T.),":")}
 
-// + EOF: flib17.prg
-// +
+
+*+ EOF: flib17.prg
+*+

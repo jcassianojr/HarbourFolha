@@ -1,29 +1,29 @@
-// +--------------------------------------------------------------------
-// +
-// +
-// +
-// +    Programa  : foab.prg
-// +
-// +
-// +
-// +     Sistema:
-// +
-// +     Linguagem: Harbour
-// +
-// +     Autor: jcassiano
-// +
-// +     Copyright (c) 2024,  jcassiano
-// +
-// +
-// +
-// +
-// +
-// +    Documentado em 27-Dez-2024 as  9:45 pm
-// +
-// +
-// +
-// +--------------------------------------------------------------------
-// +
+*+--------------------------------------------------------------------
+*+
+*+
+*+
+*+    Programa  : foab.prg
+*+
+*+
+*+
+*+     Sistema:
+*+
+*+     Linguagem: Harbour
+*+
+*+     Autor: jcassiano
+*+
+*+     Copyright (c) 2024,  jcassiano
+*+
+*+     
+*+
+*+
+*+
+*+    Documentado em 15-Out-2026 as 12:37 pm
+*+
+*+
+*+
+*+--------------------------------------------------------------------
+*+
 
 // :*****************************************************************************
 // :
@@ -55,68 +55,69 @@
 
 
 
-CABEX( "Lan‡amento Automatico Pre Programado" )
+CABEX("Lan‡amento Automatico Pre Programado")
 PARA CC
 XA := XB := XC := XD := XE := XF := 0
 
-IF !NETUSE( "FO_LAN" )  // BREDE("FO_LAN",0)
-RETU .F.
+IF !NETUSE("FO_LAN")  // BREDE("FO_LAN",0)
+   RETU .F.
 ENDIF
 
-IF !ARQUSAR( CC )
-dbCloseAll()
-RETU .F.
+IF !ARQUSAR(CC)
+   dbCloseAll()
+   RETU .F.
 ENDIF
 cSELE2 := Alias()
 
 
-IF !netuse( "contas" )  // AREDE("CONTAS","CONTAS",0)
-dbCloseAll()
-RETU .F.
+IF !netuse("contas")  // AREDE("CONTAS","CONTAS",0)
+   dbCloseAll()
+   RETU .F.
 ENDIF
 
-IF !netuse( pes )   // AREDE(PES,PES,0)
-dbCloseAll()
-RETU .F.
+IF !netuse(pes)   // AREDE(PES,PES,0)
+   dbCloseAll()
+   RETU .F.
 ENDIF
 
 
-dbSelectAr( "FO_LAN" )
+dbSelectAr("FO_LAN")
 dbGoTop()
 WHILE !Eof()
-mCONTA := CONTA
-VALE   := VALOR
-mGRUPO := GRUPO
-MDS( ' ' + Str( CONTA, 3 ) + ' ' + Str( VALOR, 10, 2 ) + ' ' + SubStr( GRUPO, 1, 60 ) )
-dbSelectAr( PES )
-dbGoTop()
-WHILE !Eof()
-IF Empty( DEMITIDO )
-PETELA( 8 )
-ANOADM := Year( ADMITIDO )
-MESADM := Month( ADMITIDO )
-ANOATU := Year( DXDIA )
-MESATU := Month( DXDIA )
-MESTRA := ( 12 - MESADM ) + MESATU
-ANOTRA := ANOATU - ANOADM - 1 + Int( MESTRA / 12 )
-CTR    := NUMERO
-IF &mGRUPO
-GRAVA2( mCONTA )
-IF XB = 1 .OR. XB = 3
-FIELD->HORAS := VALOR
-FIELD->VALOR := 0
-ENDIF
-ENDIF
-ENDIF
-dbSelectAr( PES )
-dbSkip()
-ENDDO
-dbSelectAr( "FO_LAN" )
-dbSkip()
+   mCONTA := CONTA
+   VALE   := VALOR
+   mGRUPO := GRUPO
+   MDS(' '+Str(CONTA,3)+' '+Str(VALOR,10,2)+' '+SubStr(GRUPO,1,60))
+   dbSelectAr(PES)
+   dbGoTop()
+   WHILE !Eof()
+      IF Empty(DEMITIDO)
+         PETELA(8)
+         ANOADM := Year(ADMITIDO)
+         MESADM := Month(ADMITIDO)
+         ANOATU := Year(DXDIA)
+         MESATU := Month(DXDIA)
+         MESTRA := (12 - MESADM)+MESATU
+         ANOTRA := ANOATU - ANOADM - 1+Int(MESTRA / 12)
+         CTR    := NUMERO
+         IF &mGRUPO
+            GRAVA2(mCONTA)
+            IF XB = 1 .OR. XB = 3
+               FIELD->HORAS := VALOR
+               FIELD->VALOR := 0
+            ENDIF
+         ENDIF
+      ENDIF
+      dbSelectAr(PES)
+      dbSkip()
+   ENDDO
+   dbSelectAr("FO_LAN")
+   dbSkip()
 ENDDO
 dbCloseAll()
 RETU
 // : FIM: FOAB.PRG
 
-// + EOF: foab.prg
-// +
+
+*+ EOF: foab.prg
+*+

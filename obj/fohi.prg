@@ -18,7 +18,7 @@
 *+
 *+
 *+
-*+    Documentado em 27-Dez-2024 as  9:46 pm
+*+    Documentado em 15-Out-2026 as 12:37 pm
 *+
 *+
 *+
@@ -41,7 +41,15 @@
 *+
 *+
 *+
+*+
+*+
+*+
+*+
 *+    Function fohi()
+*+
+*+
+*+
+*+
 *+
 *+
 *+
@@ -49,7 +57,12 @@
 *+
 *+
 *+
+*+
+*+
+*+
+*+
 function fohi
+
 
 PARA ARQ
 
@@ -92,21 +105,21 @@ DBCLOSEALL()
 
 CTA := 0
 DO CASE
-CASE ARQ = 1    //FOL
+CASE ARQ = 1  //FOL
    CTA := 503
-CASE ARQ = 2    //FER
+CASE ARQ = 2  //FER
    CTA := 524
-CASE ARQ = 3    //RES
+CASE ARQ = 3  //RES
    CTA := 504
-CASE ARQ = 4    //13
+CASE ARQ = 4  //13
    CTA := 505
-CASE ARQ = 5    //COM
+CASE ARQ = 5  //COM
    CTA := 503
-CASE ARQ = 7    //SEM
+CASE ARQ = 7  //SEM
    CTA := 501
-CASE ARQ = 8    //FOL
+CASE ARQ = 8  //FOL
    CTA := 503
-CASE ARQ = 9    //ADI
+CASE ARQ = 9  //ADI
    CTA := 501
 CASE ARQ = 10   //PRE
    CTA := 527
@@ -236,6 +249,7 @@ SET PRIN OFF
 IMPEND()
 RETU
 // : FIM: FOHI.PRG
+
 
 *+ EOF: fohi.prg
 *+

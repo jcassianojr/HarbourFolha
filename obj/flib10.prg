@@ -1,29 +1,29 @@
-// +--------------------------------------------------------------------
-// +
-// +
-// +
-// +    Programa  : flib10.prg
-// +
-// +
-// +
-// +     Sistema:
-// +
-// +     Linguagem: Harbour
-// +
-// +     Autor: jcassiano
-// +
-// +     Copyright (c) 2024,  jcassiano
-// +
-// +
-// +
-// +
-// +
-// +    Documentado em 27-Dez-2024 as  9:44 pm
-// +
-// +
-// +
-// +--------------------------------------------------------------------
-// +
+*+--------------------------------------------------------------------
+*+
+*+
+*+
+*+    Programa  : flib10.prg
+*+
+*+
+*+
+*+     Sistema:
+*+
+*+     Linguagem: Harbour
+*+
+*+     Autor: jcassiano
+*+
+*+     Copyright (c) 2024,  jcassiano
+*+
+*+     
+*+
+*+
+*+
+*+    Documentado em 15-Out-2026 as 12:36 pm
+*+
+*+
+*+
+*+--------------------------------------------------------------------
+*+
 
 /* agora unficada f_encode
 FUNCTION XDECODE(cVAR)
@@ -51,9 +51,10 @@ RETURN cVAR
 // +
 // +
 // +
-FUNCTION USERMCRI( cUSER, cITEM, nPOS )
+FUNCTION USERMCRI(cUSER,cITEM,nPOS)
 
-   RETURN ENCODE( StrZero( nPOS, 2 ) + Left( cUSER, 2 ) + cITEM + SubStr( cUSER, 3 ) )
+
+RETURN ENCODE(StrZero(nPOS,2)+Left(cUSER,2)+cITEM+SubStr(cUSER,3))
 
 
 // +--------------------------------------------------------------------
@@ -68,9 +69,11 @@ FUNCTION USERMCRI( cUSER, cITEM, nPOS )
 // +
 // +
 // +
-FUNCTION USERMDEC( cUSER, cITEM, nPOS )
+FUNCTION USERMDEC(cUSER,cITEM,nPOS)
 
-   RETURN DECODE( StrZero( nPOS, 2 ) + Left( cUSER, 2 ) + cITEM + SubStr( cUSER, 3 ) )
 
-// + EOF: flib10.prg
-// +
+RETURN DECODE(StrZero(nPOS,2)+Left(cUSER,2)+cITEM+SubStr(cUSER,3))
+
+
+*+ EOF: flib10.prg
+*+
